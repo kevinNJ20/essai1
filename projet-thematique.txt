@@ -1,0 +1,89 @@
+Partie 4 : Raveline et Kevin - Expliquer la charge qui nous incombe
+
+dimanche 22 mars 2020
+14:08
+
+HYPOTHESES : 
+	- Contrôler parfaitement le robot à l'aide du logiciel lego ev3 en langage Labview
+	- Exécuter correctement toutes les actions requises lors de la compétition
+	
+ PRINCIPES : 
+	Contrôler parfaitement le robot à l'aide du logiciel lego ev3
+Dans cette section en effet, il s'agit pour nous d'avoir une parfaite maitrises des actions que nous allons éffectuer. Les différentes actions  à savoir sont: 
+
+	• Connexion :
+		○ Par bluetooth
+			§ Après la mise en marche du robot et le lancement du logiciel lego ev3, nous créons un nouveau projet 
+			§ Activation de l'option bluetooth directement sur le robot
+			§ Synchronisation du robot et de l'interface de contrôle à partir de l'interface 
+	• Départ : 
+		○ Rotation du robot sur lui-même: 
+			§ Deplacement char : puissance à gauche (-70), puissance à droite (70)
+	• Hisser la manche à air 1: 
+		○ Translation 1
+			§ Deplacement char : ligne droite vers l'avant, nombre de tours de roue : 1
+			§ Correction des décalage : 
+				□ Le capteur gyroscopique recupère la position initiale du robot
+				□ Le mouvement de translation est dans une boucle: 
+					® La boucle s'execute 3 fois or la roue tourne 1 fois d'où à la fin on obtient 3 tours de roue
+					® X0 (Valeur du capteur à l'instant initial) moins Xt (valeur du capteur à l'instant t dans la boucle avant la translation) corrige l'erreur et fait revenir le robot sur la ligne droite de son deplacement
+					® Le resultat précédént est multiplié par un facteur réel et la valeur obtenue au donnée à l'angle de l'action suivant la translation
+					® L'action suivant la translation est en effet un Déplacement char ( puissance à gauche -75, à droite +75, et d'angle mentionnée ci-dessus)
+			§ Attente grâce au capteur à ultrason
+				□ Distance : < 5cm
+		○ Translation 2 (marche arriere)
+			§ Deplacement char : ligne droite vers l'arriere, nombre de tours 3
+		○ Attente grâce au capteur à ultrason
+			□ Distance : < 5cm
+	• Rotation du robot sur lui-même de 900
+		○ Déplacement char (B+C) : 
+			§ Puissance à gauche : +75
+			§ Puissance à droite : -75
+	• Translation
+		○ Deplacement char (B+C) : ligne droite , 1 tour  de roue
+		○ Attente grâce au capteur à ultrason
+			□ Distance : < 5cm
+	• Rotation du robot sur lui-même de -900
+		○ Déplacement char (B+C) : 
+			§ Puissance à gauche : -75
+			§ Puissance à droite : +75
+	• Hisser la manche à air 2: 
+		○ Translation 1
+			§ Deplacement char : ligne droite vers l'avant, nombre de tours de roue : 1
+			§ Correction des décalage : 
+				□ Le capteur gyroscopique recupère la position initiale du robot
+				□ Le mouvement de translation est dans une boucle: 
+					® La boucle s'execute 3 fois or la roue tourne 1 fois d'où à la fin on obtient 3 tours de roue
+					® X0 (Valeur du capteur à l'instant initial) moins Xt (valeur du capteur à l'instant t dans la boucle avant la translation) corrige l'erreur et fait revenir le robot sur la ligne droite de son deplacement
+					® Le resultat précédént est multiplié par un facteur réel et la valeur obtenue au donnée à l'angle de l'action suivant la translation
+					® L'action suivant la translation est en effet un Déplacement char ( puissance à gauche -75, à droite +75, et d'angle mentionnée ci-dessus)
+			§ Attente grâce au capteur à ultrason
+				□ Distance : < 5cm
+		○ Translation 2 (marche arriere)
+			§ Deplacement char : ligne droite vers l'arriere, nombre de tours 3
+			§ Attente grâce au capteur à ultrason
+				□ Distance : < 5cm
+	• Revenir à sa position initiale
+		○ Rotation de 1800
+	• Allumer le phare
+		○ Translation en ligne droite jusqu'au phare
+			§ Deplacement char (B+C) : 3 tours de roues
+			§ Attente grâce au capteur à ultrason
+				□ Distance : < 5cm
+	• Revenir à sa position initiale
+		○ Deplacement char : en ligne droite vers l'arriere
+	• 1er rangement des bouées
+		○ Controler les deplacements du robot pour qu'il ramene les 3 bouées rouges et les 3 bouées bleues près du 2e pavillon
+	• 2nd rangement des bouées
+		○ Contrôler le robot pour qu'il range les bouées près de la position de départ
+	• Revenir à la position finale du robot
+
+DIFFICULTES
+	- Déterminer la valeur du facteur à multiplier pour déterminer l'angle de correction de la position du robot : nous avons utiliser une valeur aléatoire de 2.9
+	- Tourner le robot d'un angle α grâce au gyrophare 
+SOLUTIONS
+	- Pour déterminer la valeur du facteur à utiliser
+		○ Nous avons testé plusieurs valeurs aléatoires et en avons déduit la valeur 2.9
+	- Pour tourner le robot d'un angle α
+		○ Il a suffit de considérer une valeur ß pour le facteur
+ß>α , après plusieurs tests nous obtenons une valeur de ß qui permet de ramener le robot à un angle de +90° de sa position initiale
